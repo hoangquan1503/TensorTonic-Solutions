@@ -7,9 +7,9 @@ def dropout(x, p=0.5, rng=None):
     """
     # Write code here
     state = np.random.default_rng(rng)
-    prob = np.asarray(x, dtype=float)
-    prob = state.random(prob.shape)
-    prob = np.array([np.where(pr < 1 - p, pr, 0) for pr in prob])
-    pattern = np.array([np.where(pr != 0, 1 / (1 - p), pr) for pr in prob])
+    prob = np.asarray(x, dtype=int)
+    mask = state.random(prob.shape) < 1-p
+    scale = 1.0 / (1-p)
+    pattern = mask * scale
     x = x * pattern
     return x, pattern
